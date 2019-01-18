@@ -1,0 +1,26 @@
+import Vue from 'vue'
+import Router from 'vue-router'
+import test from '@/components/test/index'
+
+Vue.use(Router)
+
+export default new Router({
+  // mode: 'history',
+  routes: [
+    {
+      path: '/',
+      name: 'index',
+      component: () => import('@/components/index')
+    },
+    {
+      path: '/test',
+      name: 'test',
+      component: test
+    },
+    {
+      path: '/list',
+      name: 'list',
+      component: () => import('@/components/articleList/index')
+    }
+  ]
+})
