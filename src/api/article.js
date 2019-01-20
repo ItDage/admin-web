@@ -1,8 +1,9 @@
 import request from '@/util/request'
 
-export function getArticle () {
+export function getArticle (data) {
   return request({
-    url: '/test/param',
-    method: 'get'
+    url: '/article/web/getArticle',
+    method: 'post',
+    data
   })
 }

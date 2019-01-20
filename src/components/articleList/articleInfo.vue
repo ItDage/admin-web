@@ -13,11 +13,11 @@
               class="el-menu-demo"
               mode="horizontal"
               text-color="#fff">
-              <el-menu-item index="0000">首页</el-menu-item>
-              <el-menu-item index="1000">公告</el-menu-item>
-              <el-menu-item index="1001">新闻</el-menu-item>
-              <el-menu-item index="1002">法律法规</el-menu-item>
-              <el-menu-item index="1003">其他</el-menu-item>
+              <el-menu-item index="1">首页</el-menu-item>
+              <el-menu-item index="gonggao">公告</el-menu-item>
+              <el-menu-item index="3">新闻</el-menu-item>
+              <el-menu-item index="4">法律法规</el-menu-item>
+              <el-menu-item index="5">其他</el-menu-item>
               <el-menu-item index="6">关于我们</el-menu-item>
               <el-menu-item index="7">联系我们</el-menu-item>
               <el-menu-item index="8">登录</el-menu-item>
@@ -30,25 +30,15 @@
             </el-row>
             <el-row>
               <ul>
-                <li v-for="article in data" v-bind:key="article.id" style="text-align: left; margin-top: 10px">
-                  <a href="javascript:void(0)" @click="info(item, $index)">
-                      <el-row>
-                        <el-col :span="15">{{ article.title }}</el-col>
-                        <el-col :span="9">{{ article.publishDate }}</el-col>
-                      </el-row>
+                <li v-for="o in 20" v-bind:key="o.id" style="text-align: left; margin-top: 10px">
+                  <a href="#">
+                    <el-row>
+                      <el-col :span="15">{{'title ' + o }}</el-col>
+                      <el-col :span="9">2019-01-01 13:23:52</el-col>
+                    </el-row>
                   </a>
                 </li>
               </ul>
-            </el-row>
-            <el-row>
-              <el-col style="text-align: right">
-                <el-pagination
-                background
-                layout="prev, pager, next"
-                page-size="20"
-                :total="total">
-              </el-pagination>
-              </el-col>
             </el-row>
           </el-main>
           <el-footer>
@@ -68,53 +58,36 @@ export default {
   data () {
     return {
       test: 'test',
-      activeIndex2: '1',
-      currentPage: 1,
-      pageSize: 20,
-      type: null,
-      data: [],
-      total: 0
+      activeIndex2: '1'
     }
   },
   beforeCreate () {
     document.querySelector('body').setAttribute('style', 'background-color:#F0F0F0')
   },
   created () {
-    this.type = this.$route.params.key
-    this.loadArticleList()
+    getArticle().then(response => {
+      if (response.data.code === 200) {
+        this.test = JSON.stringify(response.data)
+      } else {
+        this.$message.error(response.data.message)
+      }
+    }).catch(error => {
+      console.log(error)
+    })
   },
   mounted () {
-    // alert(this.$route.params.key)
-    this.activeIndex2 = this.$route.params.key
+    alert(this.$route.params.key)
   },
   methods: {
     handleSelect (key, keyPath) {
-      if (key === '0000') {
+      if (key === '1') {
         this.$router.push({name: 'index'})
       } else {
-        this.type = key
-        this.loadArticleList()
+        alert(key)
       }
     },
-    info () {
-      this.$router.push({name: 'info'})
-    },
-    loadArticleList () {
-      const param = {
-        'currentPage': this.currentPage,
-        'pageSize': this.pageSize,
-        'type': this.type
-      }
-      getArticle(param).then(response => {
-        if (response.data.code === 200) {
-          this.data = response.data.tableData
-          this.total = response.data.total
-        } else {
-          this.$message.error(response.data.message)
-        }
-      }).catch(error => {
-        console.log(error)
-      })
+    test2 () {
+      alert(111)
     }
   }
 }

@@ -13,11 +13,11 @@
               class="el-menu-demo"
               mode="horizontal"
               text-color="#fff">
-              <el-menu-item index="1">首页</el-menu-item>
-              <el-menu-item index="gonggao">公告</el-menu-item>
-              <el-menu-item index="3">新闻</el-menu-item>
-              <el-menu-item index="4">法律法规</el-menu-item>
-              <el-menu-item index="5">其他</el-menu-item>
+              <el-menu-item index="0000">首页</el-menu-item>
+              <el-menu-item index="1000">公告</el-menu-item>
+              <el-menu-item index="1001">新闻</el-menu-item>
+              <el-menu-item index="1002">法律法规</el-menu-item>
+              <el-menu-item index="1003">其他</el-menu-item>
               <el-menu-item index="6">关于我们</el-menu-item>
               <el-menu-item index="7">联系我们</el-menu-item>
               <el-menu-item index="8">登录</el-menu-item>
@@ -48,18 +48,18 @@
             <el-row>&nbsp;</el-row>
             <el-row>
               <el-col :span="15">
-                <div :key="o" class="text item" v-for="o in 5">
+                <div :key="o.id" class="text item" v-for="o in data">
                 <el-card class="box-card2" shadow="hover">
                     <div>
                       <el-row>
                         <el-col :span="3">
-                          <el-tag size="small" type="success">标签二</el-tag>
+                          <el-tag size="small" type="success">{{ o.typeName }}</el-tag>
                         </el-col>
                         <el-col :span="10">
-                          <a href="#">{{'我是標題 ' + o }}</a>
+                          <a href="#">{{ o.title }}</a>
                         </el-col>
                       </el-row>
-                      <el-row>我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容</el-row>
+                      <el-row v-html="o.subContent"></el-row>
                     </div>
                 </el-card>
                 </div>
@@ -72,7 +72,7 @@
                     <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
                   </div>
                   <div :key="o" class="text item" v-for="o in 4">
-                    <el-row><el-col :span="24">{{'title ' + o }}</el-col></el-row>
+                    <el-row><el-col :span="24">{{ o }}</el-col></el-row>
                   </div>
                 </el-card>
               </el-col>
@@ -95,23 +95,18 @@ export default {
   data () {
     return {
       test: 'test',
-      activeIndex2: '1'
+      activeIndex2: '1',
+      currentPage: 1,
+      pageSize: 5,
+      type: '00000',
+      data: []
     }
   },
   beforeCreate () {
     document.querySelector('body').setAttribute('style', 'background-color:#F0F0F0')
   },
   created () {
-    getArticle().then(response => {
-      if (response.data.code === 200) {
-        // alert(JSON.stringify(response.data))
-        this.test = JSON.stringify(response.data)
-      } else {
-        this.$message.error(response.data.message)
-      }
-    }).catch(error => {
-      console.log(error)
-    })
+    this.loadArticleList()
   },
   methods: {
     handleSelect (key, keyPath) {
@@ -119,6 +114,24 @@ export default {
     },
     test2 () {
       alert(111)
+    },
+    loadArticleList () {
+      const param = {
+        'currentPage': this.currentPage,
+        'pageSize': this.pageSize,
+        'type': this.type
+      }
+      getArticle(param).then(response => {
+        if (response.data.code === 200) {
+          this.data = response.data.tableData
+          console.log(JSON.stringify(this.data))
+          this.total = response.data.total
+        } else {
+          this.$message.error(response.data.message)
+        }
+      }).catch(error => {
+        console.log(error)
+      })
     }
   }
 }
