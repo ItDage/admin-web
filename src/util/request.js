@@ -64,6 +64,7 @@ service.interceptors.response.use(
       // }
       return response.data
     } else {
+      this.$message.error('服务器内部逻辑错误--500')
       return response.data
     }
   },

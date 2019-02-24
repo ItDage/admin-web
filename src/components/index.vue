@@ -4,6 +4,7 @@
       <el-col :span="3">&nbsp;</el-col>
       <el-col :span="18">
         <el-container>
+          <el-col :span="24">
           <el-header>
             <el-menu
               :default-active="activeIndex2"
@@ -18,11 +19,13 @@
               <el-menu-item index="1001">新闻</el-menu-item>
               <el-menu-item index="1002">法律法规</el-menu-item>
               <el-menu-item index="1003">其他</el-menu-item>
+              <el-menu-item index="1004">下载专区</el-menu-item>
               <el-menu-item index="6">关于我们</el-menu-item>
               <el-menu-item index="7">联系我们</el-menu-item>
               <el-menu-item index="8">登录</el-menu-item>
             </el-menu>
           </el-header>
+          </el-col>
           <el-main>
             <el-row>
               <el-col :span="15">
@@ -36,8 +39,8 @@
               <el-col :span="8">
                 <el-card class="box-card" shadow="always">
                   <div class="clearfix" slot="header">
-                    <span>卡片名称</span>
-                    <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
+                    <span>公告</span>
+                    <!--<el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>-->
                   </div>
                   <div :key="o" class="text item" v-for="o in 4">
                     {{'列表内容 ' + o }}
@@ -53,10 +56,21 @@
                     <div>
                       <el-row>
                         <el-col :span="3">
-                          <el-tag size="small" type="success">{{ o.typeName }}</el-tag>
+                          <span v-if="o.type == 1000">
+                            <el-tag size="small">{{ o.typeName }}</el-tag>
+                          </span>
+                          <span v-if="o.type == 1001">
+                            <el-tag size="small" type="success">{{ o.typeName }}</el-tag>
+                          </span>
+                          <span v-if="o.type == 1002">
+                            <el-tag size="small" type="info">{{ o.typeName }}</el-tag>
+                          </span>
+                          <span v-if="o.type == 1003">
+                            <el-tag size="small" type="warning">{{ o.typeName }}</el-tag>
+                          </span>
                         </el-col>
                         <el-col :span="10">
-                          <a href="#">{{ o.title }}</a>
+                          <router-link target="_blank" :to="{path: '/info', query:{id: o.id}}">{{ o.title }}</router-link>
                         </el-col>
                       </el-row>
                       <el-row v-html="o.subContent"></el-row>
@@ -68,8 +82,8 @@
               <el-col :span="8">
                 <el-card class="box-card" shadow="always">
                   <div class="clearfix" slot="header">
-                    <span>卡片名称</span>
-                    <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
+                    <span>最新动态</span>
+                    <!--<el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>-->
                   </div>
                   <div :key="o" class="text item" v-for="o in 4">
                     <el-row><el-col :span="24">{{ o }}</el-col></el-row>
@@ -79,19 +93,23 @@
             </el-row>
           </el-main>
           <el-footer>
-            footer
+            <Footer ref="Footer" />
           </el-footer>
         </el-container>
       </el-col>
       <el-col :span="3">&nbsp;</el-col>
     </el-row>
+
+    <login v-if="dialogFormVisible" ref="login" :visible.sync="dialogFormVisible" :title.sync="title" @closeMain="parentFn"></login>
   </div>
 </template>
 
 <script>
 import {getArticle} from '@/api/article'
-
+import Footer from '@/components/footer'
+import login from '@/components/login/index'
 export default {
+  components: { Footer, login },
   data () {
     return {
       test: 'test',
@@ -99,7 +117,9 @@ export default {
       currentPage: 1,
       pageSize: 5,
       type: '00000',
-      data: []
+      data: [],
+      dialogFormVisible: false,
+      title: '登录'
     }
   },
   beforeCreate () {
@@ -110,10 +130,19 @@ export default {
   },
   methods: {
     handleSelect (key, keyPath) {
-      this.$router.push({name: 'list', params: { key: key }})
+      if (key === '0000') {
+        this.$router.push({name: 'index'})
+      } else if (key === '8') {
+        this.dialogFormVisible = true
+        // window.location.href = 'http://localhost:9527/#/'
+        // return false
+      } else {
+        this.$router.push({name: 'list', params: { key: key }})
+      }
     },
     test2 () {
-      alert(111)
+      this.data.dialogFormVisible = true
+      alert(this.data.dialogFormVisible)
     },
     loadArticleList () {
       const param = {
@@ -124,7 +153,6 @@ export default {
       getArticle(param).then(response => {
         if (response.data.code === 200) {
           this.data = response.data.tableData
-          console.log(JSON.stringify(this.data))
           this.total = response.data.total
         } else {
           this.$message.error(response.data.message)
@@ -132,6 +160,9 @@ export default {
       }).catch(error => {
         console.log(error)
       })
+    },
+    parentFn () {
+      console.log('test')
     }
   }
 }

@@ -2,44 +2,20 @@
   <div>
     <el-row>
       <el-col :span="3">&nbsp;</el-col>
-      <el-col :span="18">
+      <el-col :span="18" style="background-color: white">
         <el-container>
           <el-header>
-            <el-menu
-              :default-active="activeIndex2"
-              @select="handleSelect"
-              active-text-color="#ffd04b"
-              background-color="#545c64"
-              class="el-menu-demo"
-              mode="horizontal"
-              text-color="#fff">
-              <el-menu-item index="1">首页</el-menu-item>
-              <el-menu-item index="gonggao">公告</el-menu-item>
-              <el-menu-item index="3">新闻</el-menu-item>
-              <el-menu-item index="4">法律法规</el-menu-item>
-              <el-menu-item index="5">其他</el-menu-item>
-              <el-menu-item index="6">关于我们</el-menu-item>
-              <el-menu-item index="7">联系我们</el-menu-item>
-              <el-menu-item index="8">登录</el-menu-item>
-            </el-menu>
+            <el-row>
+              <span v-text="article.title" style="font-size: 18px; font-weight: bold;"></span>
+            </el-row>
+            <br>
+            <el-row style="text-align: right">
+              发表时间:{{article.publishDate}}
+              <br>
+            </el-row>
           </el-header>
-          <el-main>
-            <el-row>
-              <el-col :span="17">&nbsp;</el-col>
-              <el-col :span="7">搜索</el-col>
-            </el-row>
-            <el-row>
-              <ul>
-                <li v-for="o in 20" v-bind:key="o.id" style="text-align: left; margin-top: 10px">
-                  <a href="#">
-                    <el-row>
-                      <el-col :span="15">{{'title ' + o }}</el-col>
-                      <el-col :span="9">2019-01-01 13:23:52</el-col>
-                    </el-row>
-                  </a>
-                </li>
-              </ul>
-            </el-row>
+          <el-main style="text-align: left">
+            <span v-html="article.content"></span>
           </el-main>
           <el-footer>
             footer
@@ -52,42 +28,41 @@
 </template>
 
 <script>
-import {getArticle} from '@/api/article'
+import { getArticleInfo } from '@/api/article'
 
 export default {
   data () {
     return {
-      test: 'test',
-      activeIndex2: '1'
+      article: {}
     }
   },
   beforeCreate () {
     document.querySelector('body').setAttribute('style', 'background-color:#F0F0F0')
   },
   created () {
-    getArticle().then(response => {
-      if (response.data.code === 200) {
-        this.test = JSON.stringify(response.data)
-      } else {
-        this.$message.error(response.data.message)
-      }
-    }).catch(error => {
-      console.log(error)
-    })
+    this.loadArticleInfo()
   },
   mounted () {
-    alert(this.$route.params.key)
+    // alert(this.$route.query.id)
   },
   methods: {
-    handleSelect (key, keyPath) {
-      if (key === '1') {
-        this.$router.push({name: 'index'})
-      } else {
-        alert(key)
-      }
-    },
     test2 () {
       alert(111)
+    },
+    loadArticleInfo () {
+      const param = {
+        'id': this.$route.query.id
+      }
+      getArticleInfo(JSON.stringify(param)).then(response => {
+        if (response.data.code === 200) {
+          this.article = response.data.data
+          // alert(JSON.stringify(response.data))
+        } else {
+          this.$message.error(response.data.message)
+        }
+      }).catch(error => {
+        console.log(error)
+      })
     }
   }
 }
