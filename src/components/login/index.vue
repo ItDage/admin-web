@@ -46,8 +46,8 @@ export default {
     }
     return {
       form: {
-        username: '',
-        password: ''
+        username: 'admin',
+        password: '123456'
       },
       formLabelWidth: '80px',
       loading: false,
@@ -66,10 +66,25 @@ export default {
     login () {
       this.$refs.form.validate(valid => {
         if (valid) {
-          alert(JSON.stringify(this.form))
           this.loading = true
           this.$store.dispatch('LoginByUsername', this.form).then(() => {
             this.loading = false
+            alert(this.$store.state.user.token)
+            // 拉取用户信息
+            this.$store.dispatch('GetUserInfo').then(res => { // 拉取user_info
+              const roles = res.data.data.roles // note: roles must be a array! such as: ['editor','develop']
+
+              // store.dispatch('GenerateRoutes', { roles }).then(() => { // 根据roles权限生成可访问的路由表
+              //   router.addRoutes(store.getters.addRouters) // 动态添加可访问路由表
+              //   next({ ...to, replace: true }) // hack方法 确保addRoutes已完成 ,set the replace: true so the navigation will not leave a history record
+              // })
+            }).catch((err) => {
+              store.dispatch('FedLogOut').then(() => {
+                Message.error(err || 'Verification failed, please login again')
+                next({ path: '/' })
+              })
+            })
+
           }).catch(() => {
             this.loading = false
           })

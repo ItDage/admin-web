@@ -22,7 +22,13 @@
               <el-menu-item index="1004">下载专区</el-menu-item>
               <el-menu-item index="6">关于我们</el-menu-item>
               <el-menu-item index="7">联系我们</el-menu-item>
-              <el-menu-item index="8">登录</el-menu-item>
+              <el-menu-item index="8" v-if="this.$store.state.user.avatar === ''">登录</el-menu-item>
+              <el-submenu index="9" v-if="this.$store.state.user.avatar != ''">
+                  <template slot="title"><a href="javascript:;"><img :src="image" class="layui-nav-img" /></a>我的工作台</template>
+                  <el-menu-item index="2-1">个人信息</el-menu-item>
+                  <el-menu-item index="2-2">修改密码</el-menu-item>
+                  <el-menu-item index="2-3">退出</el-menu-item>
+              </el-submenu>
             </el-menu>
           </el-header>
           </el-col>
@@ -119,7 +125,8 @@ export default {
       type: '00000',
       data: [],
       dialogFormVisible: false,
-      title: '登录'
+      title: '登录',
+      image: this.$store.state.user.avatar
     }
   },
   beforeCreate () {
