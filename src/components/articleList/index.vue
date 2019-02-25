@@ -4,28 +4,29 @@
       <el-col :span="3">&nbsp;</el-col>
       <el-col :span="18">
         <el-container>
-          <el-col :span="24">
-          <el-header>
-            <el-menu
-              :default-active="activeIndex2"
-              @select="handleSelect"
-              active-text-color="#ffd04b"
-              background-color="#545c64"
-              class="el-menu-demo"
-              mode="horizontal"
-              text-color="#fff">
-                <el-menu-item index="0000">首页</el-menu-item>
-                <el-menu-item index="1000">公告</el-menu-item>
-                <el-menu-item index="1001">新闻</el-menu-item>
-                <el-menu-item index="1002">法律法规</el-menu-item>
-                <el-menu-item index="1003">其他</el-menu-item>
-                <el-menu-item index="1004">下载专区</el-menu-item>
-                <el-menu-item index="6">关于我们</el-menu-item>
-                <el-menu-item index="7">联系我们</el-menu-item>
-                <el-menu-item index="8">登录</el-menu-item>
-            </el-menu>
-          </el-header>
-          </el-col>
+          <!--<el-col :span="24">-->
+          <!--<el-header>-->
+            <!--<el-menu-->
+              <!--:default-active="activeIndex2"-->
+              <!--@select="handleSelect"-->
+              <!--active-text-color="#ffd04b"-->
+              <!--background-color="#545c64"-->
+              <!--class="el-menu-demo"-->
+              <!--mode="horizontal"-->
+              <!--text-color="#fff">-->
+                <!--<el-menu-item index="0000">首页</el-menu-item>-->
+                <!--<el-menu-item index="1000">公告</el-menu-item>-->
+                <!--<el-menu-item index="1001">新闻</el-menu-item>-->
+                <!--<el-menu-item index="1002">法律法规</el-menu-item>-->
+                <!--<el-menu-item index="1003">其他</el-menu-item>-->
+                <!--<el-menu-item index="1004">下载专区</el-menu-item>-->
+                <!--<el-menu-item index="6">关于我们</el-menu-item>-->
+                <!--<el-menu-item index="7">联系我们</el-menu-item>-->
+                <!--<el-menu-item index="8">登录</el-menu-item>-->
+            <!--</el-menu>-->
+          <!--</el-header>-->
+          <!--</el-col>-->
+          <Header></Header>
           <el-main>
             <el-row>
               <el-col :span="17">&nbsp;</el-col>
@@ -88,9 +89,10 @@
 <script>
 import {getArticle, getFile, download} from '@/api/article'
 import Footer from '@/components/footer'
+import Header from "@/components/header";
 
 export default {
-  components: { Footer },
+  components: {Header, Footer },
   data () {
     return {
       test: 'test',

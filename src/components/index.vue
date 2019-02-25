@@ -4,34 +4,7 @@
       <el-col :span="3">&nbsp;</el-col>
       <el-col :span="18">
         <el-container>
-          <el-col :span="24">
-          <el-header>
-            <el-menu
-              :default-active="activeIndex2"
-              @select="handleSelect"
-              active-text-color="#ffd04b"
-              background-color="#545c64"
-              class="el-menu-demo"
-              mode="horizontal"
-              text-color="#fff">
-              <el-menu-item index="0000">首页</el-menu-item>
-              <el-menu-item index="1000">公告</el-menu-item>
-              <el-menu-item index="1001">新闻</el-menu-item>
-              <el-menu-item index="1002">法律法规</el-menu-item>
-              <el-menu-item index="1003">其他</el-menu-item>
-              <el-menu-item index="1004">下载专区</el-menu-item>
-              <el-menu-item index="6">关于我们</el-menu-item>
-              <el-menu-item index="7">联系我们</el-menu-item>
-              <el-menu-item index="8" v-if="this.$store.state.user.avatar === ''">登录</el-menu-item>
-              <el-submenu index="9" v-if="this.$store.state.user.avatar != ''">
-                  <template slot="title"><a href="javascript:;"><img :src="image" class="layui-nav-img" /></a>我的工作台</template>
-                  <el-menu-item index="2-1">个人信息</el-menu-item>
-                  <el-menu-item index="2-2">修改密码</el-menu-item>
-                  <el-menu-item index="2-3">退出</el-menu-item>
-              </el-submenu>
-            </el-menu>
-          </el-header>
-          </el-col>
+          <Header></Header>
           <el-main>
             <el-row>
               <el-col :span="15">
@@ -113,9 +86,10 @@
 <script>
 import {getArticle} from '@/api/article'
 import Footer from '@/components/footer'
+import Header from '@/components/header'
 import login from '@/components/login/index'
 export default {
-  components: { Footer, login },
+  components: { Footer, login, Header },
   data () {
     return {
       test: 'test',
