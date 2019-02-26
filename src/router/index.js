@@ -18,7 +18,7 @@ export default new Router({
       component: test
     },
     {
-      path: '/list/:key',
+      path: '/list',
       name: 'list',
       component: () => import('@/components/articleList/index')
     },

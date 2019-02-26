@@ -4,28 +4,6 @@
       <el-col :span="3">&nbsp;</el-col>
       <el-col :span="18">
         <el-container>
-          <!--<el-col :span="24">-->
-          <!--<el-header>-->
-            <!--<el-menu-->
-              <!--:default-active="activeIndex2"-->
-              <!--@select="handleSelect"-->
-              <!--active-text-color="#ffd04b"-->
-              <!--background-color="#545c64"-->
-              <!--class="el-menu-demo"-->
-              <!--mode="horizontal"-->
-              <!--text-color="#fff">-->
-                <!--<el-menu-item index="0000">首页</el-menu-item>-->
-                <!--<el-menu-item index="1000">公告</el-menu-item>-->
-                <!--<el-menu-item index="1001">新闻</el-menu-item>-->
-                <!--<el-menu-item index="1002">法律法规</el-menu-item>-->
-                <!--<el-menu-item index="1003">其他</el-menu-item>-->
-                <!--<el-menu-item index="1004">下载专区</el-menu-item>-->
-                <!--<el-menu-item index="6">关于我们</el-menu-item>-->
-                <!--<el-menu-item index="7">联系我们</el-menu-item>-->
-                <!--<el-menu-item index="8">登录</el-menu-item>-->
-            <!--</el-menu>-->
-          <!--</el-header>-->
-          <!--</el-col>-->
           <Header></Header>
           <el-main>
             <el-row>
@@ -110,24 +88,31 @@ export default {
   },
   created () {
     this.type = this.$route.params.key
-    this.other(this.type)
+    if (this.type === '1004') {
+      this.loadFileList()
+    } else {
+      this.loadArticleList()
+    }
+  },
+  watch: {
+    '$route' (to, from){
+      alert('watch')
+    }
+  },
+  beforeRouteUpdate (to, from, next) {
+    this.type = to.params.key
+    alert('update' + this.type)
+    if (this.type === '1004') {
+      this.loadFileList()
+    } else {
+      this.loadArticleList()
+    }
+
+    // this.$router.push({name: 'list', params: { key: this.type }})
   },
   mounted () {
-    this.activeIndex2 = this.$route.params.key
   },
   methods: {
-    handleSelect (key, keyPath) {
-      if (key === '0000') {
-        this.$router.push({name: 'index'})
-      } else if (key === '8') {
-        window.location.href = 'http://localhost:9527/#/'
-        return false
-      } else {
-        this.type = key
-        this.$router.push({name: 'list', params: { key: key }})
-        this.other(key)
-      }
-    },
     info () {
       this.$router.push({name: 'info'})
     },
@@ -173,12 +158,8 @@ export default {
     search () {
       this.other(this.type)
     },
-    other (key) {
-      if (key === '1004') {
-        this.loadFileList()
-      } else {
-        this.loadArticleList()
-      }
+    other () {
+      alert('sss')
     },
     download2 (id) {
       const param = {

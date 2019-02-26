@@ -42,6 +42,10 @@
   import Footer from '@/components/footer'
   import login from '@/components/login/index'
   export default {
+    props: {
+      key: String,
+      default: 1000
+    },
     components: { Footer, login },
     data () {
       return {
@@ -56,10 +60,16 @@
         image: this.$store.state.user.avatar
       }
     },
+    computed:{
+      activeIndex2(){
+        return this.$route.path.replace('/','')
+      }
+    },
     beforeCreate () {
       document.querySelector('body').setAttribute('style', 'background-color:#F0F0F0')
     },
     created () {
+      this.type = this.$route.params.key
       this.loadArticleList()
     },
     methods: {
@@ -68,10 +78,9 @@
           this.$router.push({name: 'index'})
         } else if (key === '8') {
           this.dialogFormVisible = true
-          // window.location.href = 'http://localhost:9527/#/'
-          // return false
         } else {
-          this.$router.push({name: 'list', params: { key: key }})
+          // alert(key)
+          this.$router.push({path: 'list', query: { key: key }})
         }
       },
       test2 () {
