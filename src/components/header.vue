@@ -5,16 +5,17 @@
           <el-col :span="24">
             <el-header>
               <el-menu
-                :default-active="activeIndex2"
+                :default-active="$route.path"
                 @select="handleSelect"
+                router
                 active-text-color="#ffd04b"
                 background-color="#545c64"
                 class="el-menu-demo"
                 mode="horizontal"
                 text-color="#fff">
-                <el-menu-item index="0000">首页</el-menu-item>
-                <el-menu-item index="1000">公告</el-menu-item>
-                <el-menu-item index="1001">新闻</el-menu-item>
+                <el-menu-item index="/">首页</el-menu-item>
+                <el-menu-item index="/list?query=1000">公告</el-menu-item>
+                <el-menu-item index="/list">新闻</el-menu-item>
                 <el-menu-item index="1002">法律法规</el-menu-item>
                 <el-menu-item index="1003">其他</el-menu-item>
                 <el-menu-item index="1004">下载专区</el-menu-item>
