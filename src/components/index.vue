@@ -4,7 +4,6 @@
       <el-col :span="3">&nbsp;</el-col>
       <el-col :span="18">
         <el-container>
-          <Header></Header>
           <el-main>
             <el-row>
               <el-col :span="15">
@@ -90,9 +89,14 @@ import Header from '@/components/header'
 import login from '@/components/login/index'
 export default {
   components: { Footer, login, Header },
+  props: {
+    test: {
+      type: String,
+      request: false
+    }
+  },
   data () {
     return {
-      test: 'test',
       activeIndex2: '1',
       currentPage: 1,
       pageSize: 5,

@@ -17,9 +17,9 @@
           <el-main style="text-align: left">
             <span v-html="article.content"></span>
           </el-main>
-          <el-footer>
-            footer
-          </el-footer>
+          <!--<el-footer>-->
+            <!--<Footer ref="Footer"> </Footer>-->
+          <!--</el-footer>-->
         </el-container>
       </el-col>
       <el-col :span="3">&nbsp;</el-col>
@@ -29,21 +29,29 @@
 
 <script>
 import { getArticleInfo } from '@/api/article'
+import Footer from '@/components/footer'
 
 export default {
+  props: {
+  },
+  components: { Footer },
   data () {
     return {
-      article: {}
+      article: {},
+      type: 0
     }
   },
-  beforeCreate () {
-    document.querySelector('body').setAttribute('style', 'background-color:#F0F0F0')
-  },
   created () {
+    this.type = this.$route.query.id
     this.loadArticleInfo()
   },
   mounted () {
     // alert(this.$route.query.id)
+  },
+  watch: {
+    type: function (newVal ,oldVal) {
+      console.log(newVal)
+    }
   },
   methods: {
     test2 () {
@@ -51,7 +59,7 @@ export default {
     },
     loadArticleInfo () {
       const param = {
-        'id': this.$route.query.id
+        'id': this.type
       }
       getArticleInfo(JSON.stringify(param)).then(response => {
         if (response.data.code === 200) {

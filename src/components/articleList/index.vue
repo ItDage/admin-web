@@ -4,7 +4,6 @@
       <el-col :span="3">&nbsp;</el-col>
       <el-col :span="18">
         <el-container>
-          <Header></Header>
           <el-main>
             <el-row>
               <el-col :span="17">&nbsp;</el-col>
@@ -47,7 +46,7 @@
                 <el-pagination
                 @current-change="handleCurrentChange"
                 background
-                layout="prev, pager, next"
+                layout="total, prev, pager, next"
                 :page-size="pageSize"
                 :total="total">
               </el-pagination>
@@ -67,27 +66,31 @@
 <script>
 import {getArticle, getFile, download} from '@/api/article'
 import Footer from '@/components/footer'
-import Header from "@/components/header";
 
 export default {
-  components: {Header, Footer },
+  props: {
+    type: {
+      type: String,
+      request: true,
+      default: '0'
+    }
+  },
+  components: { Footer },
   data () {
     return {
       test: 'test',
       activeIndex2: '1',
       currentPage: 1,
       pageSize: 20,
-      type: null,
       data: [],
       total: 0,
       title: null
     }
   },
   beforeCreate () {
-    document.querySelector('body').setAttribute('style', 'background-color:#F0F0F0;')
+    // document.querySelector('body').setAttribute('style', 'background-color:#F0F0F0;')
   },
   created () {
-    this.type = this.$route.params.key
     if (this.type === '1004') {
       this.loadFileList()
     } else {
@@ -95,20 +98,14 @@ export default {
     }
   },
   watch: {
-    '$route' (to, from){
-      alert('watch')
+    type: function (newVal ,oldVal) {
+      this.type = newVal
+      if (this.type === '1004') {
+        this.loadFileList()
+      } else {
+        this.loadArticleList()
+      }
     }
-  },
-  beforeRouteUpdate (to, from, next) {
-    this.type = to.params.key
-    alert('update' + this.type)
-    if (this.type === '1004') {
-      this.loadFileList()
-    } else {
-      this.loadArticleList()
-    }
-
-    // this.$router.push({name: 'list', params: { key: this.type }})
   },
   mounted () {
   },
@@ -153,13 +150,18 @@ export default {
     },
     handleCurrentChange (val) {
       this.currentPage = val
-      this.other(this.type)
+      if (this.type === '1004') {
+        this.loadFileList()
+      } else {
+        this.loadArticleList()
+      }
     },
     search () {
-      this.other(this.type)
-    },
-    other () {
-      alert('sss')
+      if (this.type === '1004') {
+        this.loadFileList()
+      } else {
+        this.loadArticleList()
+      }
     },
     download2 (id) {
       const param = {
