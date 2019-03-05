@@ -19,8 +19,13 @@
                   <div class="clearfix" slot="header">
                     <span>公告</span>
                   </div>
-                  <div :key="o.id" class="text item" v-for="o in gonggao">
-                    <span><router-link target="_blank" :to="{path: '/info', query:{id: o.id}}">{{ o.title }}</router-link></span>
+                  <div class="text item" v-for="(article, index) in data" :key="article.id">
+                    <router-link target="_blank" :to="{path: '/info', query:{id: article.id}}">
+                    <span v-if="index === 0"><span class="layui-badge">{{index + 1}}</span></span>
+                    <span v-else-if="index === 1"> <span class="layui-badge layui-bg-green">{{index + 1}}</span></span>
+                    <span v-else-if="index === 2"><span class="layui-badge layui-bg-blue">{{index + 1}}</span></span>
+                    <span v-else><span class="layui-badge layui-bg-gray">{{index + 1}}</span></span>
+                    {{ article.title }}</router-link>
                   </div>
                 </el-card>
               </el-col>
