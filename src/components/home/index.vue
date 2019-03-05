@@ -71,6 +71,7 @@ export default {
     // }
   },
   created () {
+    alert(this.$store.state.user.avatar)
     this.loadArticleList()
   },
   methods: {

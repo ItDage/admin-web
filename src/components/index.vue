@@ -85,10 +85,9 @@
 <script>
 import {getArticle} from '@/api/article'
 import Footer from '@/components/footer'
-import Header from '@/components/header'
 import login from '@/components/login/index'
 export default {
-  components: { Footer, login, Header },
+  components: { Footer, login },
   props: {
     test: {
       type: String,
