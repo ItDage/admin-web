@@ -55,7 +55,8 @@
                           <router-link target="_blank" :to="{path: '/info', query:{id: o.id}}">{{ o.title }}</router-link>
                         </el-col>
                       </el-row>
-                      <el-row v-html="o.subContent"></el-row>
+                      <el-row>&nbsp;</el-row>
+                      <el-row v-html="o.subContent" style="margin-right: 20px;"></el-row>
                     </div>
                 </el-card>
                 </div>
