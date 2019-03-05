@@ -21,7 +21,7 @@
                 <el-card class="box-card3" shadow="hover">
                   <el-row>
                   <el-col :span="15">
-                  <router-link target="_blank" :to="{path: '/info', query:{id: article.id}}">{{index + 1}} : {{ article.title }}</router-link>
+                  <router-link target="_blank" :to="{path: '/info', query:{id: article.id}}">{{index + 1}} 、 {{ article.title }}</router-link>
                   </el-col>
                   <el-col :span="9" style="text-align: right">{{ article.publishDate }}</el-col>
                   </el-row>

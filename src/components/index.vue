@@ -18,10 +18,9 @@
                 <el-card class="box-card" shadow="always">
                   <div class="clearfix" slot="header">
                     <span>公告</span>
-                    <!--<el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>-->
                   </div>
-                  <div :key="o" class="text item" v-for="o in 4">
-                    {{'列表内容 ' + o }}
+                  <div :key="o.id" class="text item" v-for="o in gonggao">
+                    <span><router-link target="_blank" :to="{path: '/info', query:{id: o.id}}">{{ o.title }}</router-link></span>
                   </div>
                 </el-card>
               </el-col>
@@ -63,8 +62,8 @@
                     <span>最新动态</span>
                     <!--<el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>-->
                   </div>
-                  <div :key="o" class="text item" v-for="o in 4">
-                    <el-row><el-col :span="24">{{ o }}</el-col></el-row>
+                  <div :key="o.id" class="text item" v-for="o in gonggao">
+                    <el-row><el-col :span="24"><router-link target="_blank" :to="{path: '/info', query:{id: o.id}}">{{ o.title }}</router-link></el-col></el-row>
                   </div>
                 </el-card>
               </el-col>
@@ -101,6 +100,7 @@ export default {
       pageSize: 5,
       type: '00000',
       data: [],
+      gonggao: [],
       dialogFormVisible: false,
       title: '登录',
       image: this.$store.state.user.avatar
@@ -110,7 +110,13 @@ export default {
     document.querySelector('body').setAttribute('style', 'background-color:#F0F0F0')
   },
   created () {
-    this.loadArticleList()
+    // this.loadArticleList()
+    // this.type = '1000'
+    // this.loadArticleList()
+  },
+  mounted (){
+    this.loadArticleList('00000')
+    this.loadArticleList('1000')
   },
   methods: {
     handleSelect (key, keyPath) {
@@ -124,22 +130,21 @@ export default {
         this.$router.push({name: 'list', params: { key: key }})
       }
     },
-    test2 () {
-      this.data.dialogFormVisible = true
-      alert(this.data.dialogFormVisible)
-    },
-    loadArticleList () {
+    loadArticleList (type) {
       const param = {
         'currentPage': this.currentPage,
         'pageSize': this.pageSize,
-        'type': this.type
+        'type': type
       }
       getArticle(param).then(response => {
         if (response.data.code === 200) {
-          this.data = response.data.tableData
-          this.total = response.data.total
-        } else {
-          this.$message.error(response.data.message)
+            if(type === '00000'){
+              this.data = response.data.tableData
+            }else if(type === '1000'){
+              this.gonggao = response.data.tableData
+            }
+          } else {
+            this.$message.error(response.data.message)
         }
       }).catch(error => {
         console.log(error)

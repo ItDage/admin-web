@@ -69,7 +69,6 @@ export default {
           this.loading = true
           this.$store.dispatch('LoginByUsername', this.form).then(() => {
             this.loading = false
-            alert(this.$store.state.user.token)
             // 拉取用户信息
             this.$store.dispatch('GetUserInfo').then(res => { // 拉取user_info
               const roles = res.data.data.roles // note: roles must be a array! such as: ['editor','develop']
@@ -78,6 +77,8 @@ export default {
               //   router.addRoutes(store.getters.addRouters) // 动态添加可访问路由表
               //   next({ ...to, replace: true }) // hack方法 确保addRoutes已完成 ,set the replace: true so the navigation will not leave a history record
               // })
+              this.$emit('update:visible', false)
+              // this.$router.push({path: '/', query: {'time': new Date()}});
             }).catch((err) => {
               store.dispatch('FedLogOut').then(() => {
                 Message.error(err || 'Verification failed, please login again')

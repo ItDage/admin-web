@@ -6,14 +6,14 @@
         <el-col :span="24">
           <el-header>
             <el-menu
-              :default-active="0"
+              :default-active="1111"
               @select="handleSelect"
               active-text-color="#ffd04b"
               background-color="#545c64"
               class="el-menu-demo"
               mode="horizontal"
               text-color="#fff">
-              <el-menu-item index="0">首页</el-menu-item>
+              <el-menu-item index="1111">首页</el-menu-item>
               <el-menu-item index="1000">公告</el-menu-item>
               <el-menu-item index="1001">新闻</el-menu-item>
               <el-menu-item index="1002">法律法规</el-menu-item>
@@ -21,12 +21,12 @@
               <el-menu-item index="1004">下载专区</el-menu-item>
               <el-menu-item index="6">关于我们</el-menu-item>
               <el-menu-item index="7">联系我们</el-menu-item>
-              <el-menu-item index="8" v-if="this.$store.state.user.avatar === ''">登录</el-menu-item>
-              <el-submenu index="9" v-if="this.$store.state.user.avatar != ''">
-                <template slot="title"><a href="javascript:;"><img :src="image" class="layui-nav-img" /></a>我的工作台</template>
+              <el-menu-item index="8" v-if="this.$store.state.user.token === '' || this.$store.state.user.token === null">登录</el-menu-item>
+              <el-submenu index="9" v-if="this.$store.state.user.token != '' && this.$store.state.user.token != null">
+                <template slot="title"><!--<a href="javascript:;"><img :src="image" class="layui-nav-img" /></a>-->我的工作台</template>
                 <el-menu-item index="2-1">个人信息</el-menu-item>
                 <el-menu-item index="2-2">修改密码</el-menu-item>
-                <el-menu-item index="2-3">退出</el-menu-item>
+                <el-menu-item index="9999">退出</el-menu-item>
               </el-submenu>
             </el-menu>
           </el-header>
@@ -71,15 +71,20 @@ export default {
     // }
   },
   created () {
-    alert(this.$store.state.user.avatar)
     this.loadArticleList()
   },
   methods: {
     handleSelect (key, keyPath) {
-      if (key === '0') {
+      if (key === '1111') {
         this.home = true
       } else if(key === '8') {
+        // 登录
         this.dialogFormVisible = true
+      } else if(key === '9999') {
+        // 退出
+        this.$store.dispatch('LogOut').then(() => {
+
+        })
       } else {
         this.type = key
         this.home = false
@@ -107,7 +112,7 @@ export default {
       })
     },
     parentFn () {
-      console.log('test')
+      this.$router.push({path:"/", query:{'time': new Date()}})
     }
   }
 }

@@ -3,13 +3,13 @@ import { getToken, setToken, removeToken } from '@/util/auth'
 
 const user = {
   state: {
-    user: '',
+    user: window.sessionStorage.getItem('user'),
     status: '',
     email: 'admin',
     code: '',
-    token: getToken(),
-    name: '',
-    avatar: '',
+    token: window.sessionStorage.getItem('token'),
+    name: window.sessionStorage.getItem('name'),
+    avatar: window.sessionStorage.getItem('avatar'),
     introduction: '',
     roles: [],
     setting: {
@@ -19,6 +19,7 @@ const user = {
   mutations: {
     SET_TOKEN: (state, token) => {
       state.token = token
+      window.sessionStorage.setItem('token', token)
     },
     SET_INTRODUCTION: (state, introduction) => {
       state.introduction = introduction
@@ -28,6 +29,7 @@ const user = {
     },
     SET_AVATAR: (state, avatar) => {
       state.avatar = avatar
+      window.sessionStorage.setItem('avatar', avatar)
     },
     SET_ROLES: (state, roles) => {
       state.roles = roles
