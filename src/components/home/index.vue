@@ -6,14 +6,14 @@
         <el-col :span="24">
           <el-header>
             <el-menu
-              :default-active="1111"
+              :default-active="activeIndex2"
               @select="handleSelect"
               active-text-color="#ffd04b"
               background-color="#545c64"
               class="el-menu-demo"
               mode="horizontal"
               text-color="#fff">
-              <el-menu-item index="1111">首页</el-menu-item>
+              <el-menu-item index="1-0">首页</el-menu-item>
               <el-menu-item index="1000">公告</el-menu-item>
               <el-menu-item index="1001">新闻</el-menu-item>
               <el-menu-item index="1002">法律法规</el-menu-item>
@@ -21,7 +21,7 @@
               <el-menu-item index="1004">下载专区</el-menu-item>
               <el-menu-item index="6">关于我们</el-menu-item>
               <el-menu-item index="7">联系我们</el-menu-item>
-              <el-menu-item index="8" v-if="this.$store.state.user.token === '' || this.$store.state.user.token === null">登录</el-menu-item>
+              <el-menu-item index="8" v-if="this.$store.state.user.token === '' || this.$store.state.user.token === null">{{this.$store.state.user.token}}登录</el-menu-item>
               <el-submenu index="9" v-if="this.$store.state.user.token != '' && this.$store.state.user.token != null">
                 <template slot="title"><!--<a href="javascript:;"><img :src="image" class="layui-nav-img" /></a>-->我的工作台</template>
                 <el-menu-item index="2-1">个人信息</el-menu-item>
@@ -40,6 +40,7 @@
     <ArticleList v-if="!home" :type="type"></ArticleList>
 
     <login v-if="dialogFormVisible" ref="login" :visible.sync="dialogFormVisible" :title.sync="title" @closeMain="parentFn"></login>
+    <UserInfo v-if="dialogUserInfoVisible" ref="UserInfo" :visible.sync = "dialogUserInfoVisible"></UserInfo>
   </div>
 </template>
 
@@ -49,18 +50,21 @@ import Footer from '@/components/footer'
 import login from '@/components/login/index'
 import Home from '@/components/index'
 import ArticleList from '@/components/articleList/index'
+import UserInfo from '@/components/user/index'
+
 export default {
-  components: { Footer, login, Home, ArticleList },
+  components: { Footer, login, Home, ArticleList, UserInfo },
   data () {
     return {
       test: 'test',
-      activeIndex2: '1',
+      activeIndex2: '1-0',
       currentPage: 1,
       pageSize: 5,
       type: '00000',
       data: [],
       home: true,
       dialogFormVisible: false,
+      dialogUserInfoVisible: false,
       title: '登录',
       image: this.$store.state.user.avatar
     }
@@ -75,16 +79,17 @@ export default {
   },
   methods: {
     handleSelect (key, keyPath) {
-      if (key === '1111') {
+      if (key === '1-0') {
         this.home = true
-      } else if(key === '8') {
+      } else if (key === '8') {
         // 登录
         this.dialogFormVisible = true
-      } else if(key === '9999') {
+      } else if (key === '9999') {
         // 退出
-        this.$store.dispatch('LogOut').then(() => {
-
-        })
+        this.$store.dispatch('LogOut').then(() => {})
+      } else if (key === '2-1') {
+        this.dialogFormVisible = false
+        this.dialogUserInfoVisible = true
       } else {
         this.type = key
         this.home = false
@@ -103,7 +108,7 @@ export default {
       getArticle(param).then(response => {
         if (response.data.code === 200) {
           this.data = response.data.tableData
-          this.total = response.data.total
+          // this.total = response.data.total
         } else {
           this.$message.error(response.data.message)
         }
@@ -112,7 +117,7 @@ export default {
       })
     },
     parentFn () {
-      this.$router.push({path:"/", query:{'time': new Date()}})
+      // this.$router.push({path:"/", query:{'time': new Date()}})
     }
   }
 }

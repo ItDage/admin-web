@@ -7,7 +7,8 @@ const user = {
     status: '',
     email: 'admin',
     code: '',
-    token: window.sessionStorage.getItem('token'),
+    gender: 0,
+    token: getToken(),
     name: window.sessionStorage.getItem('name'),
     avatar: window.sessionStorage.getItem('avatar'),
     introduction: '',
@@ -36,6 +37,9 @@ const user = {
     },
     SET_EMAIL: (state, email) => {
       state.email = email
+    },
+    SET_GENDER: (state, gender) => {
+      state.gender = gender
     }
   },
   actions: {
@@ -73,6 +77,7 @@ const user = {
           commit('SET_AVATAR', data.avatar)
           commit('SET_INTRODUCTION', data.introduction)
           commit('SET_EMAIL', data.email)
+          commit('SET_GENDER', data.gender)
           resolve(response)
         }).catch(error => {
           reject(error)

@@ -49,7 +49,7 @@ export default {
     // alert(this.$route.query.id)
   },
   watch: {
-    type: function (newVal ,oldVal) {
+    type: function (newVal, oldVal) {
       console.log(newVal)
     }
   },

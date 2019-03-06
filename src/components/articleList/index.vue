@@ -17,11 +17,11 @@
             </el-row>
             <el-row>
               <span v-if="type != '1004'">
-                <div v-for="(article, index) in data" :key="article" class="text item">
+                <div v-for="(article, index) in data" :key="article.id" class="text item">
                 <el-card class="box-card3" shadow="hover">
                   <el-row>
                   <el-col :span="15">
-                  <router-link target="_blank" :to="{path: '/info', query:{id: article.id}}">{{index + 1}} 、 {{ article.title }}</router-link>
+                  <router-link target="_blank" :to="{path: '/info', query:{id: article.id}}"><span class="layui-badge layui-bg-green">{{index + 1}}</span> {{ article.title }}</router-link>
                   </el-col>
                   <el-col :span="9" style="text-align: right">{{ article.publishDate }}</el-col>
                   </el-row>
@@ -98,7 +98,7 @@ export default {
     }
   },
   watch: {
-    type: function (newVal ,oldVal) {
+    type: function (newVal, oldVal) {
       this.type = newVal
       if (this.type === '1004') {
         this.loadFileList()

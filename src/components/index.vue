@@ -82,17 +82,16 @@
       </el-col>
       <el-col :span="3">&nbsp;</el-col>
     </el-row>
-
-    <login v-if="dialogFormVisible" ref="login" :visible.sync="dialogFormVisible" :title.sync="title" @closeMain="parentFn"></login>
   </div>
 </template>
 
 <script>
 import {getArticle} from '@/api/article'
 import Footer from '@/components/footer'
-import login from '@/components/login/index'
+import Login from '@/components/login/index'
+
 export default {
-  components: { Footer, login },
+  components: { Footer, Login },
   props: {
     test: {
       type: String,
@@ -101,7 +100,6 @@ export default {
   },
   data () {
     return {
-      activeIndex2: '1',
       currentPage: 1,
       pageSize: 5,
       type: '00000',
@@ -125,17 +123,6 @@ export default {
     this.loadArticleList('1000')
   },
   methods: {
-    handleSelect (key, keyPath) {
-      if (key === '0000') {
-        this.$router.push({name: 'index'})
-      } else if (key === '8') {
-        this.dialogFormVisible = true
-        // window.location.href = 'http://localhost:9527/#/'
-        // return false
-      } else {
-        this.$router.push({name: 'list', params: { key: key }})
-      }
-    },
     loadArticleList (type) {
       const param = {
         'currentPage': this.currentPage,
