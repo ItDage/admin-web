@@ -16,11 +16,12 @@
               <el-menu-item index="1-0">首页</el-menu-item>
               <el-menu-item index="1000">公告</el-menu-item>
               <el-menu-item index="1001">新闻</el-menu-item>
+              <el-menu-item index="1100" v-if="currentRole('corporation_admin')">社管新闻</el-menu-item>
               <el-menu-item index="1002">法律法规</el-menu-item>
               <el-menu-item index="1003">其他</el-menu-item>
               <el-menu-item index="1004">下载专区</el-menu-item>
               <el-menu-item index="6">关于我们</el-menu-item>
-              <el-menu-item index="7">联系我们</el-menu-item>
+              <el-menu-item index="7" v-if="currentRole('admin')">联系我们</el-menu-item>
               <el-menu-item index="8" v-if="this.$store.state.user.token === '' || this.$store.state.user.token === null">{{this.$store.state.user.token}}登录</el-menu-item>
               <el-submenu index="9" v-if="this.$store.state.user.token != '' && this.$store.state.user.token != null">
                 <template slot="title"><!--<a href="javascript:;"><img :src="image" class="layui-nav-img" /></a>-->我的工作台</template>
@@ -33,11 +34,14 @@
         </el-col>
         <el-col :span="3">&nbsp;</el-col>
       </el-container>
+      <el-main>
+        <!--首页-->
+        <Home v-if="home"></Home>
+        <!--文章列表页-->
+        <ArticleList v-if="!home" :type="type"></ArticleList>
+        <Footer ref="Footer"> </Footer>
+      </el-main>
     </el-row>
-    <!--首页-->
-    <Home v-if="home"></Home>
-    <!--文章列表页-->
-    <ArticleList v-if="!home" :type="type"></ArticleList>
 
     <login v-if="dialogFormVisible" ref="login" :visible.sync="dialogFormVisible" :title.sync="title" @closeMain="parentFn"></login>
     <UserInfo v-if="dialogUserInfoVisible" ref="UserInfo" :visible.sync = "dialogUserInfoVisible"></UserInfo>
@@ -88,6 +92,7 @@ export default {
         // 退出
         this.$store.dispatch('LogOut').then(() => {})
       } else if (key === '2-1') {
+        // 个人信息
         this.dialogFormVisible = false
         this.dialogUserInfoVisible = true
       } else {
@@ -118,6 +123,10 @@ export default {
     },
     parentFn () {
       // this.$router.push({path:"/", query:{'time': new Date()}})
+    },
+    currentRole (role) {
+      var roles = window.sessionStorage.getItem('roles').split(',')
+      return roles.indexOf(role) > -1
     }
   }
 }

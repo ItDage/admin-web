@@ -3,19 +3,19 @@
     <img :src="avatar" class="layui-circle" style="width: 60px; height: 60px;">
     <el-form :model="form" ref="form" label-width="80px">
       <el-form-item label="邮箱">
-        <el-input v-model="form.email" autocomplete="off"></el-input>
+        <el-input v-model="form.email" autocomplete="off" disabled></el-input>
       </el-form-item>
       <el-form-item label="性别">
-        <el-select v-model="form.region" placeholder="请选择性别">
-          <el-option label="男" value="0"></el-option>
-          <el-option label="女" value="1"></el-option>
-        </el-select>
+        <el-input v-model="form.gender" autocomplete="off" disabled></el-input>
+      </el-form-item>
+      <el-form-item label="学校">
+        <el-input v-model="form.school" autocomplete="off" disabled></el-input>
       </el-form-item>
     </el-form>
-    <div slot="footer" class="dialog-footer">
-      <el-button @click="dialogFormVisible = false">取 消</el-button>
-      <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
-    </div>
+    <!--<div slot="footer" class="dialog-footer">-->
+      <!--<el-button @click="dialogFormVisible = false">取 消</el-button>-->
+      <!--<el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>-->
+    <!--</div>-->
   </el-dialog>
 </template>
 
@@ -35,6 +35,8 @@ export default {
         name: '',
         region: '',
         email: this.$store.state.user.email,
+        gender: this.$store.state.user.gender == 0 ? '女' : '男',
+        school: this.$store.state.school,
         date1: '',
         date2: '',
         delivery: false,

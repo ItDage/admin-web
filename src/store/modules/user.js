@@ -13,6 +13,7 @@ const user = {
     avatar: window.sessionStorage.getItem('avatar'),
     introduction: '',
     roles: [],
+    school: '',
     setting: {
       articlePlatform: []
     }
@@ -34,12 +35,16 @@ const user = {
     },
     SET_ROLES: (state, roles) => {
       state.roles = roles
+      window.sessionStorage.setItem('roles', roles)
     },
     SET_EMAIL: (state, email) => {
       state.email = email
     },
     SET_GENDER: (state, gender) => {
       state.gender = gender
+    },
+    SET_SCHOOL: (state, school) => {
+      state.school = school
     }
   },
   actions: {
@@ -78,6 +83,7 @@ const user = {
           commit('SET_INTRODUCTION', data.introduction)
           commit('SET_EMAIL', data.email)
           commit('SET_GENDER', data.gender)
+          commit('SET_SCHOOL', data.school)
           resolve(response)
         }).catch(error => {
           reject(error)

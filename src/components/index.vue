@@ -75,9 +75,6 @@
               </el-col>
             </el-row>
           </el-main>
-          <el-footer>
-            <Footer ref="Footer" />
-          </el-footer>
         </el-container>
       </el-col>
       <el-col :span="3">&nbsp;</el-col>

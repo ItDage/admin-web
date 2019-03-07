@@ -4,6 +4,21 @@ import test from '@/components/test/index'
 
 Vue.use(Router)
 
+export const constantRouterMap = [
+  {
+    path: '/',
+    component: () => import('@/components/home/index'),
+    hidden: true
+  }
+]
+
+export const asyncRouterMap = [
+  {
+
+  }
+]
+
+
 export default new Router({
   // mode: 'history',
   routes: [
