@@ -5,7 +5,7 @@
         <el-input v-model="form.username" name="username" placeholder="请输入用户名" autocomplete="off"></el-input>
       </el-form-item>
       <el-form-item label="密码" :label-width="formLabelWidth" prop="password">
-      <el-input v-model="form.password" name="password" placeholder="请输入密码" autocomplete="off"></el-input>
+      <el-input v-model="form.password" name="password"  type="password" placeholder="请输入密码" autocomplete="off"></el-input>
     </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
@@ -46,7 +46,7 @@ export default {
     }
     return {
       form: {
-        username: 'admin',
+        username: 'sfzltpt2@qq.com',
         password: '123456'
       },
       formLabelWidth: '80px',

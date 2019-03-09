@@ -13,12 +13,24 @@
               class="el-menu-demo"
               mode="horizontal"
               text-color="#fff">
-              <el-menu-item index="1-0">首页</el-menu-item>
-              <el-menu-item index="1000">公告</el-menu-item>
-              <el-menu-item index="1001">新闻</el-menu-item>
-              <el-menu-item index="1100" v-if="currentRole('corporation_admin')">社管新闻</el-menu-item>
-              <el-menu-item index="1002">法律法规</el-menu-item>
-              <el-menu-item index="1003">其他</el-menu-item>
+              <el-menu-item index="0000">首页</el-menu-item>
+              <!--超管公告-->
+              <el-menu-item index="1000" v-if="currentRole('admin')">公告</el-menu-item>
+              <!--社管公告-->
+              <el-menu-item index="1100" v-if="currentRole('corporation_admin, corporation_common')">公告</el-menu-item>
+              <!--超管新闻 -->
+              <el-menu-item index="1001" v-if="currentRole('admin')">新闻</el-menu-item>
+              <!--社管新闻-->
+              <el-menu-item index="1101" v-if="currentRole('corporation_admin, corporation_common')">新闻</el-menu-item>
+              <!--社管活动-->
+              <el-menu-item index="1102" v-if="currentRole('corporation_admin, corporation_common')">活动</el-menu-item>
+              <!--社管新闻-->
+              <el-menu-item index="1103" v-if="currentRole('corporation_admin, corporation_common')">章程</el-menu-item>
+              <!--超管法律法规-->
+              <el-menu-item index="1002" v-if="currentRole('admin')">法律法规</el-menu-item>
+              <!--超管其他-->
+              <el-menu-item index="1003" v-if="currentRole('admin')">其他</el-menu-item>
+              <!--下载专区-->
               <el-menu-item index="1004">下载专区</el-menu-item>
               <el-menu-item index="6">关于我们</el-menu-item>
               <el-menu-item index="7" v-if="currentRole('admin')">联系我们</el-menu-item>
@@ -39,7 +51,11 @@
         <Home v-if="home"></Home>
         <!--文章列表页-->
         <ArticleList v-if="!home" :type="type"></ArticleList>
-        <Footer ref="Footer"> </Footer>
+        <el-row>
+          <el-col :span="3">&nbsp;</el-col>
+            <Footer ref="Footer"> </Footer>
+          <el-col :span="3">&nbsp;</el-col>
+        </el-row>
       </el-main>
     </el-row>
 
@@ -61,7 +77,7 @@ export default {
   data () {
     return {
       test: 'test',
-      activeIndex2: '1-0',
+      activeIndex2: '0000',
       currentPage: 1,
       pageSize: 5,
       type: '00000',
@@ -83,7 +99,7 @@ export default {
   },
   methods: {
     handleSelect (key, keyPath) {
-      if (key === '1-0') {
+      if (key === '0000') {
         this.home = true
       } else if (key === '8') {
         // 登录
@@ -113,7 +129,6 @@ export default {
       getArticle(param).then(response => {
         if (response.data.code === 200) {
           this.data = response.data.tableData
-          // this.total = response.data.total
         } else {
           this.$message.error(response.data.message)
         }
@@ -125,7 +140,14 @@ export default {
       // this.$router.push({path:"/", query:{'time': new Date()}})
     },
     currentRole (role) {
-      var roles = window.sessionStorage.getItem('roles').split(',')
+      // role = role.split(',')
+      var roles = window.sessionStorage.getItem('roles')
+      if (roles == null || roles === '') {
+        roles = ['admin']
+        window.sessionStorage.setItem('roles', 'admin')
+      } else {
+        roles = window.sessionStorage.getItem('roles').split(',')
+      }
       return roles.indexOf(role) > -1
     }
   }

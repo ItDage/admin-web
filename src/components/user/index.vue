@@ -27,9 +27,9 @@ export default {
       default: true
     }
   },
-  created() {
+  created () {
   },
-  data() {
+  data () {
     return {
       form: {
         name: '',
@@ -46,7 +46,7 @@ export default {
       },
       avatar: this.$store.state.user.avatar,
       formLabelWidth: '80px'
-    };
+    }
   },
   methods: {
     refreshTab () {
