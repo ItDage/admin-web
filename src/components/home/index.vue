@@ -17,15 +17,15 @@
               <!--超管公告-->
               <el-menu-item index="1000" v-if="currentRole('admin')">公告</el-menu-item>
               <!--社管公告-->
-              <el-menu-item index="1100" v-if="currentRole('corporation_admin, corporation_common')">公告</el-menu-item>
+              <el-menu-item index="1100" v-if="currentRole('corporation_admin,corporation_common')">公告</el-menu-item>
               <!--超管新闻 -->
               <el-menu-item index="1001" v-if="currentRole('admin')">新闻</el-menu-item>
               <!--社管新闻-->
-              <el-menu-item index="1101" v-if="currentRole('corporation_admin, corporation_common')">新闻</el-menu-item>
+              <el-menu-item index="1101" v-if="currentRole('corporation_admin,corporation_common')">新闻</el-menu-item>
               <!--社管活动-->
-              <el-menu-item index="1102" v-if="currentRole('corporation_admin, corporation_common')">活动</el-menu-item>
+              <el-menu-item index="1102" v-if="currentRole('corporation_admin,corporation_common')">活动</el-menu-item>
               <!--社管新闻-->
-              <el-menu-item index="1103" v-if="currentRole('corporation_admin, corporation_common')">章程</el-menu-item>
+              <el-menu-item index="1103" v-if="currentRole('corporation_admin,corporation_common')">章程</el-menu-item>
               <!--超管法律法规-->
               <el-menu-item index="1002" v-if="currentRole('admin')">法律法规</el-menu-item>
               <!--超管其他-->
@@ -59,7 +59,7 @@
       </el-main>
     </el-row>
 
-    <login v-if="dialogFormVisible" ref="login" :visible.sync="dialogFormVisible" :title.sync="title" @closeMain="parentFn"></login>
+    <login v-if="dialogFormVisible" ref="login" :visible.sync="dialogFormVisible" :title.sync="title" @closeMain="closeMain"></login>
     <UserInfo v-if="dialogUserInfoVisible" ref="UserInfo" :visible.sync = "dialogUserInfoVisible"></UserInfo>
   </div>
 </template>
@@ -89,10 +89,8 @@ export default {
       image: this.$store.state.user.avatar
     }
   },
+  inject: ['reload'],
   computed: {
-    // activeIndex2 () {
-    //   return this.$route.path.replace('/','')
-    // }
   },
   created () {
     this.loadArticleList()
@@ -106,7 +104,9 @@ export default {
         this.dialogFormVisible = true
       } else if (key === '9999') {
         // 退出
-        this.$store.dispatch('LogOut').then(() => {})
+        this.$store.dispatch('LogOut').then(() => {
+          this.reload()
+        })
       } else if (key === '2-1') {
         // 个人信息
         this.dialogFormVisible = false
@@ -118,7 +118,6 @@ export default {
     },
     test2 () {
       this.data.dialogFormVisible = true
-      alert(this.data.dialogFormVisible)
     },
     loadArticleList () {
       const param = {
@@ -128,7 +127,10 @@ export default {
       }
       getArticle(param).then(response => {
         if (response.data.code === 200) {
-          this.data = response.data.tableData
+          // this.$data.data = response.data.tableData
+          this.data.splice(0)
+          this.data.push(response.data.tableData)
+          console.log('内部数据' + JSON.stringify(this.data))
         } else {
           this.$message.error(response.data.message)
         }
@@ -136,11 +138,12 @@ export default {
         console.log(error)
       })
     },
-    parentFn () {
-      // this.$router.push({path:"/", query:{'time': new Date()}})
+    closeMain () {
+      console.log('关闭登录框的调用sssss')
+      // 社管首页
+      this.reload()
     },
     currentRole (role) {
-      // role = role.split(',')
       var roles = window.sessionStorage.getItem('roles')
       if (roles == null || roles === '') {
         roles = ['admin']
@@ -148,7 +151,18 @@ export default {
       } else {
         roles = window.sessionStorage.getItem('roles').split(',')
       }
-      return roles.indexOf(role) > -1
+      console.log(JSON.stringify(roles))
+      var currentRole = role.trim().split(',')
+      for (var i = 0; i < roles.length; i++) {
+        for (var j = 0; j < currentRole.length; j++) {
+          console.log(currentRole[j] + '  ' + roles[i])
+          console.log(currentRole[j] === roles[i])
+          if (currentRole[j] === roles[i]) {
+            return true
+          }
+        }
+      }
+      return false
     }
   }
 }
