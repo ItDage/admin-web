@@ -155,8 +155,6 @@ export default {
       var currentRole = role.trim().split(',')
       for (var i = 0; i < roles.length; i++) {
         for (var j = 0; j < currentRole.length; j++) {
-          console.log(currentRole[j] + '  ' + roles[i])
-          console.log(currentRole[j] === roles[i])
           if (currentRole[j] === roles[i]) {
             return true
           }
