@@ -30,11 +30,11 @@
               <!--超管法律法规-->
               <el-menu-item index="1002" v-if="currentRole('admin')">法律法规</el-menu-item>
               <!--超管其他-->
-              <el-menu-item index="1003" v-if="currentRole('admin')">其他</el-menu-item>
+              <!--<el-menu-item index="1003" v-if="currentRole('admin')">其他</el-menu-item>-->
               <!--下载专区-->
               <el-menu-item index="1004">下载专区</el-menu-item>
-              <el-menu-item index="6">关于我们</el-menu-item>
-              <el-menu-item index="7" v-if="currentRole('admin')">联系我们</el-menu-item>
+              <!--<el-menu-item index="6">关于我们</el-menu-item>-->
+              <!--<el-menu-item index="7" v-if="currentRole('admin')">联系我们</el-menu-item>-->
               <el-menu-item index="8" v-if="this.$store.state.user.token === '' || this.$store.state.user.token === null">{{this.$store.state.user.token}}登录</el-menu-item>
               <el-submenu index="9" v-if="this.$store.state.user.token != '' && this.$store.state.user.token != null">
                 <template slot="title"><!--<a href="javascript:;"><img :src="image" class="layui-nav-img" /></a>-->我的工作台</template>

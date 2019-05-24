@@ -67,11 +67,20 @@
               <el-col :span="8">
                 <el-card class="box-card" shadow="always">
                   <div class="clearfix" slot="header">
-                    <span>简介</span>
+                    <span>新闻</span>
                     <!--<el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>-->
                   </div>
-                  <div :key="o.id" class="text item" v-for="o in gonggao">
-                    <el-row><el-col :span="24"><router-link target="_blank" :to="{path: '/info', query:{id: o.id}}">{{ o.title }}</router-link></el-col></el-row>
+                  <div class="text item" v-for="(article, index) in news" :key="article.id">
+                    <el-row>
+                      <el-col :span="24">
+                      <router-link target="_blank" :to="{path: '/info', query:{id: article.id}}">
+                        <span v-if="index === 0"><span class="layui-badge">{{index + 1}}</span></span>
+                        <span v-else-if="index === 1"> <span class="layui-badge layui-bg-green">{{index + 1}}</span></span>
+                        <span v-else-if="index === 2"><span class="layui-badge layui-bg-blue">{{index + 1}}</span></span>
+                        <span v-else><span class="layui-badge layui-bg-gray">{{index + 1}}</span></span>
+                        {{ article.title }}
+                      </router-link>
+                    </el-col></el-row>
                   </div>
                 </el-card>
               </el-col>
@@ -104,6 +113,7 @@ export default {
       type: '00000',
       data: [],
       gonggao: [],
+      news: [],
       dialogFormVisible: false,
       title: '登录',
       image: this.$store.state.user.avatar,
@@ -127,8 +137,10 @@ export default {
     this.loadRecentArticleList()
     if (window.sessionStorage.getItem('roles') === 'admin') {
       this.loadArticleList('1000')
+      this.loadNewsArticleList('1001')
     } else {
       this.loadArticleList('1100')
+      this.loadNewsArticleList('1101')
     }
   },
   methods: {
@@ -144,6 +156,26 @@ export default {
             this.data = response.data.tableData
           } else if (type === '1000' || type === '1100') {
             this.gonggao = response.data.tableData
+          }
+        } else {
+          this.$message.error(response.data.message)
+        }
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+    loadNewsArticleList (type) {
+      const param = {
+        'currentPage': this.currentPage,
+        'pageSize': this.pageSize,
+        'type': type
+      }
+      getArticle(param).then(response => {
+        if (response.data.code === 200) {
+          if (type === '00000') {
+            this.data = response.data.tableData
+          } else if (type === '1001' || type === '1101') {
+            this.news = response.data.tableData
           }
         } else {
           this.$message.error(response.data.message)
