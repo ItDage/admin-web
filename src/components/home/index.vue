@@ -64,7 +64,7 @@ export default {
       activeIndex2: '1-0',
       currentPage: 1,
       pageSize: 5,
-      type: '00000',
+      type: '1000',
       data: [],
       home: true,
       dialogFormVisible: false,
@@ -125,7 +125,12 @@ export default {
       // this.$router.push({path:"/", query:{'time': new Date()}})
     },
     currentRole (role) {
-      var roles = window.sessionStorage.getItem('roles').split(',')
+      var roles = window.sessionStorage.getItem('roles')
+      if (roles != null) {
+        roles = window.sessionStorage.getItem('roles').split(',')
+      } else {
+        return false
+      }
       return roles.indexOf(role) > -1
     }
   }

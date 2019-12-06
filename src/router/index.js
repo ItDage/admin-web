@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import test from '@/components/test/index'
-
 Vue.use(Router)
 
 export const constantRouterMap = [
@@ -14,10 +13,8 @@ export const constantRouterMap = [
 
 export const asyncRouterMap = [
   {
-
   }
 ]
-
 
 export default new Router({
   // mode: 'history',

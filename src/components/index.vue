@@ -115,7 +115,7 @@ export default {
     // this.type = '1000'
     // this.loadArticleList()
   },
-  mounted (){
+  mounted () {
     this.loadArticleList('00000')
     this.loadArticleList('1000')
   },
@@ -128,13 +128,13 @@ export default {
       }
       getArticle(param).then(response => {
         if (response.data.code === 200) {
-            if(type === '00000'){
-              this.data = response.data.tableData
-            }else if(type === '1000'){
-              this.gonggao = response.data.tableData
-            }
-          } else {
-            this.$message.error(response.data.message)
+          if (type === '00000') {
+            this.data = response.data.tableData
+          } else if (type === '1000') {
+            this.gonggao = response.data.tableData
+          }
+        } else {
+          this.$message.error(response.data.message)
         }
       }).catch(error => {
         console.log(error)

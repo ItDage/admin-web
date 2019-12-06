@@ -27,15 +27,15 @@ export default {
       default: true
     }
   },
-  created() {
+  created () {
   },
-  data() {
+  data () {
     return {
       form: {
         name: '',
         region: '',
         email: this.$store.state.user.email,
-        gender: this.$store.state.user.gender == 0 ? '女' : '男',
+        gender: this.$store.state.user.gender === 0 ? '女' : '男',
         school: this.$store.state.school,
         date1: '',
         date2: '',
@@ -46,7 +46,7 @@ export default {
       },
       avatar: this.$store.state.user.avatar,
       formLabelWidth: '80px'
-    };
+    }
   },
   methods: {
     refreshTab () {
@@ -54,5 +54,5 @@ export default {
       this.$emit('update:visible', false)
     }
   }
-};
+}
 </script>

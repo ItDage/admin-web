@@ -71,7 +71,7 @@ export default {
             this.loading = false
             // 拉取用户信息
             this.$store.dispatch('GetUserInfo').then(res => { // 拉取user_info
-              const roles = res.data.data.roles // note: roles must be a array! such as: ['editor','develop']
+              // const roles = res.data.data.roles // note: roles must be a array! such as: ['editor','develop']
 
               // store.dispatch('GenerateRoutes', { roles }).then(() => { // 根据roles权限生成可访问的路由表
               //   router.addRoutes(store.getters.addRouters) // 动态添加可访问路由表
@@ -81,11 +81,10 @@ export default {
               // this.$router.push({path: '/', query: {'time': new Date()}});
             }).catch((err) => {
               store.dispatch('FedLogOut').then(() => {
-                Message.error(err || 'Verification failed, please login again')
+                this.$message.error(err || 'Verification failed, please login again')
                 next({ path: '/' })
               })
             })
-
           }).catch(() => {
             this.loading = false
           })

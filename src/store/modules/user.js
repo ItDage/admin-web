@@ -49,7 +49,7 @@ const user = {
   },
   actions: {
     // 用户名登录
-    LoginByUsername({commit}, user) {
+    LoginByUsername ({commit}, user) {
       return new Promise((resolve, reject) => {
         loginByUsername(user).then(response => {
           const data = response.data
@@ -58,15 +58,15 @@ const user = {
           if (data.code === 200) {
             resolve()
           } else {
-            alert("用户名或密码不正确")
+            alert('用户名或密码不正确')
           }
         }).catch(error => {
-          reject(error)
+          reject('error' + error)
         })
       })
     },
     // 获取用户信息
-    GetUserInfo({commit, state}) {
+    GetUserInfo ({commit, state}) {
       return new Promise((resolve, reject) => {
         getUserInfo(state.token).then(response => {
           if (!response.data) { // 由于mockjs 不支持自定义状态码只能这样hack
@@ -86,11 +86,11 @@ const user = {
           commit('SET_SCHOOL', data.school)
           resolve(response)
         }).catch(error => {
-          reject(error)
+          reject('error')
         })
       })
     },
-    LogOut({commit, state}) {
+    LogOut ({commit, state}) {
       return new Promise((resolve, reject) => {
         logout(state.token).then(() => {
           commit('SET_TOKEN', '')
@@ -98,7 +98,7 @@ const user = {
           removeToken()
           resolve()
         }).catch(error => {
-          reject(error)
+          reject('error' + error)
         })
       })
     }
