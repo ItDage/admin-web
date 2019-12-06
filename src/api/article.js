@@ -9,6 +9,15 @@ export function getArticle (data) {
   })
 }
 
+// 获取文章列表
+export function getRecentArticle (data) {
+  return request({
+    url: '/article/web/getRecentArticle',
+    method: 'post',
+    data
+  })
+}
+
 // 获取文章详情
 export function getArticleInfo (data) {
   return request({

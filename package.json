@@ -1,7 +1,7 @@
 {
   "name": "admin-web",
   "version": "1.0.0",
-  "description": "绀惧洟绠＄悊瓒呯鍓嶅彴",
+  "description": "社团管理超管前台",
   "author": "sunchuiyou <sunchuiyou@thunisoft.com>",
   "private": true,
   "scripts": {

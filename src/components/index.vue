@@ -8,8 +8,10 @@
             <el-row>
               <el-col :span="15">
                 <el-carousel :interval="5000" arrow="always">
-                  <el-carousel-item :key="item" v-for="item in 4">
-                    <h3>{{ item }}</h3>
+                  <el-carousel-item v-for="item in imgList" :key="item.id">
+                    <el-row>
+                      <el-col :span="24"><img ref="imgHeight" height="100%" width="100%" :src="item.idView"/></el-col>
+                    </el-row>
                   </el-carousel-item>
                 </el-carousel>
               </el-col>
@@ -17,9 +19,9 @@
               <el-col :span="8">
                 <el-card class="box-card" shadow="always">
                   <div class="clearfix" slot="header">
-                    <span>公告</span>
+                    <span>最新公告</span>
                   </div>
-                  <div class="text item" v-for="(article, index) in data" :key="article.id">
+                  <div class="text item" v-for="(article, index) in gonggao" :key="article.id">
                     <router-link target="_blank" :to="{path: '/info', query:{id: article.id}}">
                     <span v-if="index === 0"><span class="layui-badge">{{index + 1}}</span></span>
                     <span v-else-if="index === 1"> <span class="layui-badge layui-bg-green">{{index + 1}}</span></span>
@@ -38,16 +40,16 @@
                     <div>
                       <el-row>
                         <el-col :span="3">
-                          <span v-if="o.type == 1000">
+                          <span v-if="o.type == 1000 || o.type == 1100">
                             <el-tag size="small">{{ o.typeName }}</el-tag>
                           </span>
-                          <span v-if="o.type == 1001">
+                          <span v-if="o.type == 1001 || o.type == 1101">
                             <el-tag size="small" type="success">{{ o.typeName }}</el-tag>
                           </span>
-                          <span v-if="o.type == 1002">
+                          <span v-if="o.type == 1002 || o.type == 1102">
                             <el-tag size="small" type="info">{{ o.typeName }}</el-tag>
                           </span>
-                          <span v-if="o.type == 1003">
+                          <span v-if="o.type == 1003 || o.type == 1103">
                             <el-tag size="small" type="warning">{{ o.typeName }}</el-tag>
                           </span>
                         </el-col>
@@ -65,11 +67,20 @@
               <el-col :span="8">
                 <el-card class="box-card" shadow="always">
                   <div class="clearfix" slot="header">
-                    <span>最新动态</span>
+                    <span>新闻</span>
                     <!--<el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>-->
                   </div>
-                  <div :key="o.id" class="text item" v-for="o in gonggao">
-                    <el-row><el-col :span="24"><router-link target="_blank" :to="{path: '/info', query:{id: o.id}}">{{ o.title }}</router-link></el-col></el-row>
+                  <div class="text item" v-for="(article, index) in news" :key="article.id">
+                    <el-row>
+                      <el-col :span="24">
+                      <router-link target="_blank" :to="{path: '/info', query:{id: article.id}}">
+                        <span v-if="index === 0"><span class="layui-badge">{{index + 1}}</span></span>
+                        <span v-else-if="index === 1"> <span class="layui-badge layui-bg-green">{{index + 1}}</span></span>
+                        <span v-else-if="index === 2"><span class="layui-badge layui-bg-blue">{{index + 1}}</span></span>
+                        <span v-else><span class="layui-badge layui-bg-gray">{{index + 1}}</span></span>
+                        {{ article.title }}
+                      </router-link>
+                    </el-col></el-row>
                   </div>
                 </el-card>
               </el-col>
@@ -83,7 +94,7 @@
 </template>
 
 <script>
-import {getArticle} from '@/api/article'
+import {getArticle, getRecentArticle} from '@/api/article'
 import Footer from '@/components/footer'
 import Login from '@/components/login/index'
 
@@ -102,9 +113,16 @@ export default {
       type: '00000',
       data: [],
       gonggao: [],
+      news: [],
       dialogFormVisible: false,
       title: '登录',
-      image: this.$store.state.user.avatar
+      image: this.$store.state.user.avatar,
+      imgList: [
+        {id: 1, idView: '../../../static/images/1.jpg'},
+        {id: 2, idView: '../../../static/images/2.jpg'},
+        {id: 3, idView: '../../../static/images/3.jpg'},
+        {id: 4, idView: '../../../static/images/4.jpg'}
+      ]
     }
   },
   beforeCreate () {
@@ -116,8 +134,14 @@ export default {
     // this.loadArticleList()
   },
   mounted () {
-    this.loadArticleList('00000')
-    this.loadArticleList('1000')
+    this.loadRecentArticleList()
+    if (window.sessionStorage.getItem('roles') === 'admin') {
+      this.loadArticleList('1000')
+      this.loadNewsArticleList('1001')
+    } else {
+      this.loadArticleList('1100')
+      this.loadNewsArticleList('1101')
+    }
   },
   methods: {
     loadArticleList (type) {
@@ -130,9 +154,44 @@ export default {
         if (response.data.code === 200) {
           if (type === '00000') {
             this.data = response.data.tableData
-          } else if (type === '1000') {
+          } else if (type === '1000' || type === '1100') {
             this.gonggao = response.data.tableData
           }
+        } else {
+          this.$message.error(response.data.message)
+        }
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+    loadNewsArticleList (type) {
+      const param = {
+        'currentPage': this.currentPage,
+        'pageSize': this.pageSize,
+        'type': type
+      }
+      getArticle(param).then(response => {
+        if (response.data.code === 200) {
+          if (type === '00000') {
+            this.data = response.data.tableData
+          } else if (type === '1001' || type === '1101') {
+            this.news = response.data.tableData
+          }
+        } else {
+          this.$message.error(response.data.message)
+        }
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+    loadRecentArticleList () {
+      const param = {
+        'currentPage': this.currentPage,
+        'pageSize': this.pageSize
+      }
+      getRecentArticle(param).then(response => {
+        if (response.data.code === 200) {
+          this.data = response.data.tableData
         } else {
           this.$message.error(response.data.message)
         }
