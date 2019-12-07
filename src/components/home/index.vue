@@ -12,6 +12,7 @@
               background-color="#545c64"
               class="el-menu-demo"
               mode="horizontal"
+              style="min-width: 800px"
               text-color="#fff">
               <el-menu-item><img src="../../../static/images/logo.png" width="80" height="40"></el-menu-item>
               <el-menu-item index="0000">首页</el-menu-item>
