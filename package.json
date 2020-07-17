@@ -1,7 +1,7 @@
 {
   "name": "admin-web",
   "version": "1.0.0",
-  "description": "社团管理超管前台",
+  "description": "脡莽脥脜鹿脺脌铆鲁卢鹿脺脟掳脤篓",
   "author": "sunchuiyou <sunchuiyou@thunisoft.com>",
   "private": true,
   "scripts": {
@@ -63,7 +63,7 @@
     "vue-style-loader": "^3.0.1",
     "vue-template-compiler": "^2.5.2",
     "webpack": "^3.6.0",
-    "webpack-bundle-analyzer": "^2.9.0",
+    "webpack-bundle-analyzer": "^3.3.2",
     "webpack-cli": "^3.2.3",
     "webpack-merge": "^4.1.0"
   },
